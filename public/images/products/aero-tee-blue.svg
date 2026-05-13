@@ -1,0 +1,9 @@
+﻿<svg width="800" height="1000" viewBox="0 0 800 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="800" height="1000" fill="#0E2A47"/>
+<rect x="60" y="60" width="680" height="880" rx="42" fill="#1F5FA6"/>
+<circle cx="680" cy="180" r="160" fill="#FF7A1F" fill-opacity="0.45"/>
+<rect x="200" y="180" width="400" height="520" rx="90" fill="#EAF2FF"/>
+<rect x="255" y="260" width="290" height="330" rx="40" fill="#2F8BFF"/>
+<text x="90" y="860" fill="#F4F8FF" font-family="Arial" font-size="56" font-weight="700">AERO TEE BLUE</text>
+<text x="90" y="915" fill="#C8DBF8" font-family="Arial" font-size="32">Master Sport</text>
+</svg>
