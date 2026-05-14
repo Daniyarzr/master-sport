@@ -93,6 +93,10 @@
                             'completed' => 'Завершен',
                             'cancelled' => 'Отменен',
                         ];
+                        $deliveryLabels = [
+                            'pickup' => 'Самовывоз',
+                            'delivery' => 'Доставка',
+                        ];
                     @endphp
 
                     <div class="orders-list">
@@ -120,13 +124,26 @@
                                                 </div>
                                                 <span>{{ $item->product_name }} × {{ $item->quantity }}</span>
                                             </div>
-                                            <b>{{ number_format((float) $item->line_total, 0, ',', ' ') }} ₽</b>
+                                            <b>{{ number_format((float) $item->line_total, 0, ',', ' ') }} &#8381;</b>
                                         </li>
                                     @endforeach
                                 </ul>
 
+                                <div class="order-delivery">
+                                    <p>
+                                        <span>Получение:</span>
+                                        <b>{{ $deliveryLabels[$order->delivery_type] ?? 'Самовывоз' }}</b>
+                                    </p>
+                                    @if ($order->delivery_type === 'delivery')
+                                        <p>
+                                            <span>Адрес:</span>
+                                            <b>{{ $order->delivery_address }}</b>
+                                        </p>
+                                    @endif
+                                </div>
+
                                 <div class="order-bottom">
-                                    <strong>Итого: {{ number_format((float) $order->total, 0, ',', ' ') }} ₽</strong>
+                                    <strong>Итого: {{ number_format((float) $order->total, 0, ',', ' ') }} &#8381;</strong>
 
                                     @if (in_array($order->status, ['new', 'processing'], true))
                                         <form method="POST" action="{{ route('dashboard.orders.cancel', $order) }}">

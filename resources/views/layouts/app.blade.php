@@ -6,19 +6,17 @@
         <title>@yield('title', 'Master Sport')</title>
         <meta
             name="description"
-            content="@yield('description', 'Master Sport - магазин спортивной одежды и базовой экипировки.')"
-        >
+            content="@yield('description', 'Master Sport - магазин спортивной одежды и базовой экипировки.')">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
             href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Unbounded:wght@500;700&display=swap"
-            rel="stylesheet"
-        >
+            rel="stylesheet">
         <link
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-        >
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="{{ asset('css/storefront.css') }}">
+        <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
     </head>
     <body>
         @include('partials.header')

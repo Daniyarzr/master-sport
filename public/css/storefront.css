@@ -9,7 +9,7 @@
     --blue-500: #2f8bff;
     --orange-600: #ff7a1f;
     --orange-500: #ff954e;
-    --radius: 12px;
+    --radius: 10px;
     --shadow: 0 14px 30px rgba(11, 34, 58, 0.1);
 }
 
@@ -306,6 +306,7 @@ a {
 .hero-banner {
     position: relative;
     min-height: 210px;
+    max-height: 600px;
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid rgba(188, 216, 247, 0.8);
@@ -778,6 +779,129 @@ a {
     gap: 0.6rem;
 }
 
+.checkout-total-lines {
+    margin-top: 0.56rem;
+    border: 1px solid #d4e3f2;
+    border-radius: 8px;
+    background: #f8fbff;
+    padding: 0.62rem 0.68rem;
+    display: grid;
+    gap: 0.38rem;
+}
+
+.checkout-total-lines p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    color: #315172;
+}
+
+.checkout-total-lines p:last-child {
+    padding-top: 0.25rem;
+    border-top: 1px solid #d4e3f2;
+}
+
+.checkout-total-lines strong {
+    color: #19385a;
+}
+
+.delivery-cards {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.delivery-card {
+    display: block;
+    cursor: pointer;
+}
+
+.delivery-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.delivery-card-box {
+    border: 1px solid #d4e3f2;
+    border-radius: 10px;
+    background: #fff;
+    padding: 0.58rem 0.62rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.delivery-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid #8fb3d9;
+    background: #fff;
+    flex-shrink: 0;
+    margin-top: 1px;
+    position: relative;
+}
+
+.delivery-check::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(40deg);
+    opacity: 0;
+}
+
+.delivery-card-text {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.delivery-card-text b {
+    font-size: 0.92rem;
+    color: #1f354d;
+}
+
+.delivery-card-text small {
+    color: #5a7591;
+}
+
+.delivery-card input:checked + .delivery-card-box {
+    border-color: #7bb0ea;
+    background: #eff6ff;
+    box-shadow: 0 8px 16px rgba(20, 93, 189, 0.12);
+}
+
+.delivery-card input:checked + .delivery-card-box .delivery-check {
+    border-color: #2f8bff;
+    background: #2f8bff;
+}
+
+.delivery-card input:checked + .delivery-card-box .delivery-check::after {
+    opacity: 1;
+}
+
+.delivery-address-field {
+    display: none;
+}
+
+.delivery-address-field.is-visible {
+    display: grid;
+}
+
+.checkout-delivery-form:has(input[name="delivery_type"][value="delivery"]:checked) .delivery-address-field {
+    display: grid;
+}
+
+.checkout-delivery-form:has(input[name="delivery_type"][value="pickup"]:checked) .delivery-address-field {
+    display: none;
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -911,6 +1035,33 @@ a {
     align-items: center;
     gap: 0.6rem;
     color: #3d5671;
+}
+
+.order-delivery {
+    margin-top: 0.3rem;
+    border: 1px solid #d6e5f3;
+    border-radius: 8px;
+    background: #f6faff;
+    padding: 0.48rem 0.56rem;
+    display: grid;
+    gap: 0.28rem;
+}
+
+.order-delivery p {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
+}
+
+.order-delivery span {
+    color: #56708c;
+}
+
+.order-delivery b {
+    color: #1f3b5b;
+    text-align: right;
+    word-break: break-word;
 }
 
 .order-item-main {

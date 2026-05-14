@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'customer_name',
     'customer_email',
     'customer_phone',
+    'delivery_type',
+    'delivery_cost',
     'delivery_address',
     'comment',
 ])]
@@ -26,6 +28,7 @@ class Order extends Model
     {
         return [
             'total' => 'decimal:2',
+            'delivery_cost' => 'decimal:2',
         ];
     }
 

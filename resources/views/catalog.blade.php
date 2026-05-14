@@ -43,6 +43,30 @@
                         </select>
                     </label>
 
+                    <label class="field">
+                        <span>Цена от</span>
+                        <input
+                            type="number"
+                            name="price_from"
+                            min="0"
+                            step="1"
+                            value="{{ $filters['price_from'] }}"
+                            placeholder="0"
+                        >
+                    </label>
+
+                    <label class="field">
+                        <span>Цена до</span>
+                        <input
+                            type="number"
+                            name="price_to"
+                            min="0"
+                            step="1"
+                            value="{{ $filters['price_to'] }}"
+                            placeholder="10000"
+                        >
+                    </label>
+
                     <div class="filter-actions">
                         <button class="btn btn-orange" type="submit">Применить</button>
                         <a class="btn btn-light" href="{{ route('catalog') }}">Сбросить</a>

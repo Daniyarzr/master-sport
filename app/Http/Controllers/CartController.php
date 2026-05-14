@@ -14,13 +14,21 @@ use Illuminate\View\View;
 
 class CartController extends Controller
 {
+    private const DELIVERY_PRICE = 300;
+
+    private const PICKUP_ADDRESS = 'г. Ижевск, Пушкинская 268';
+
     public function index(Request $request): View
     {
         $items = $this->cartItems($request);
+        $itemsTotal = $items->sum('line_total');
 
         return view('cart.index', [
             'items' => $items,
-            'total' => $items->sum('line_total'),
+            'total' => $itemsTotal,
+            'itemsTotal' => $itemsTotal,
+            'deliveryPrice' => self::DELIVERY_PRICE,
+            'pickupAddress' => self::PICKUP_ADDRESS,
             'user' => $request->user(),
         ]);
     }
@@ -109,11 +117,18 @@ class CartController extends Controller
             'customer_name' => ['required', 'string', 'max:255'],
             'customer_email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'customer_phone' => ['required', 'string', 'max:30', Rule::unique('users', 'phone')->ignore($user->id)],
-            'delivery_address' => ['nullable', 'string', 'max:500'],
+            'delivery_type' => ['required', Rule::in(['pickup', 'delivery'])],
+            'delivery_address' => ['nullable', 'required_if:delivery_type,delivery', 'string', 'max:500'],
             'comment' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        DB::transaction(function () use ($items, $validated, $user): void {
+        $deliveryType = (string) $validated['delivery_type'];
+        $deliveryCost = $deliveryType === 'delivery' ? self::DELIVERY_PRICE : 0;
+        $deliveryAddress = $deliveryType === 'delivery'
+            ? $validated['delivery_address']
+            : self::PICKUP_ADDRESS;
+
+        DB::transaction(function () use ($items, $validated, $user, $deliveryType, $deliveryCost, $deliveryAddress): void {
             $order = Order::query()->create([
                 'user_id' => $user->id,
                 'status' => 'new',
@@ -121,7 +136,9 @@ class CartController extends Controller
                 'customer_name' => $validated['customer_name'],
                 'customer_email' => $validated['customer_email'],
                 'customer_phone' => $validated['customer_phone'],
-                'delivery_address' => $validated['delivery_address'] ?? null,
+                'delivery_type' => $deliveryType,
+                'delivery_cost' => $deliveryCost,
+                'delivery_address' => $deliveryAddress,
                 'comment' => $validated['comment'] ?? null,
             ]);
 
@@ -155,7 +172,7 @@ class CartController extends Controller
                 $product->decrement('stock', $item->quantity);
             }
 
-            $order->update(['total' => $total]);
+            $order->update(['total' => $total + $deliveryCost]);
 
             $user->update([
                 'name' => $validated['customer_name'],

@@ -24,6 +24,12 @@ class CatalogController extends Controller
             ->when($request->filled('collection'), function ($query) use ($request): void {
                 $query->where('collection_id', (int) $request->input('collection'));
             })
+            ->when(is_numeric($request->input('price_from')), function ($query) use ($request): void {
+                $query->where('price', '>=', (float) $request->input('price_from'));
+            })
+            ->when(is_numeric($request->input('price_to')), function ($query) use ($request): void {
+                $query->where('price', '<=', (float) $request->input('price_to'));
+            })
             ->orderBy('name')
             ->simplePaginate(12)
             ->withQueryString();
@@ -39,6 +45,8 @@ class CatalogController extends Controller
                 'search' => (string) $request->input('search', ''),
                 'category' => (string) $request->input('category', ''),
                 'collection' => (string) $request->input('collection', ''),
+                'price_from' => (string) $request->input('price_from', ''),
+                'price_to' => (string) $request->input('price_to', ''),
             ],
         ]);
     }

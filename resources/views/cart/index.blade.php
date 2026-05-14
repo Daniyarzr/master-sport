@@ -35,7 +35,7 @@
 
                                 <div class="cart-item-body">
                                     <h3>{{ $item['name'] }}</h3>
-                                    <p>{{ number_format((float) $item['price'], 0, ',', ' ') }} ₽ за шт.</p>
+                                    <p>{{ number_format((float) $item['price'], 0, ',', ' ') }} &#8381; за шт.</p>
                                     <p>В наличии: {{ $item['stock'] }}</p>
 
                                     <div class="cart-item-actions">
@@ -70,7 +70,7 @@
                                 </div>
 
                                 <div class="cart-item-total">
-                                    {{ number_format((float) $item['line_total'], 0, ',', ' ') }} ₽
+                                    {{ number_format((float) $item['line_total'], 0, ',', ' ') }} &#8381;
                                 </div>
                             </article>
                         @endforeach
@@ -80,12 +80,21 @@
 
             <aside class="panel checkout-panel">
                 <h2>Оформление</h2>
-                <p>Итого: <strong>{{ number_format((float) $total, 0, ',', ' ') }} ₽</strong></p>
+
+                <div class="checkout-total-lines">
+                    <p>Товары: <strong>{{ number_format((float) $itemsTotal, 0, ',', ' ') }} &#8381;</strong></p>
+                    <p>Самовывоз: <strong>0 &#8381;</strong></p>
+                    <p>Доставка: <strong>{{ number_format((float) $deliveryPrice, 0, ',', ' ') }} &#8381;</strong></p>
+                </div>
 
                 @if ($items->isEmpty())
                     <p>Сначала добавь товары в корзину.</p>
                 @else
-                    <form method="POST" action="{{ route('cart.checkout') }}" class="checkout-form">
+                    @php
+                        $selectedDeliveryType = old('delivery_type', 'pickup');
+                    @endphp
+
+                    <form method="POST" action="{{ route('cart.checkout') }}" class="checkout-form checkout-delivery-form">
                         @csrf
 
                         <label class="field">
@@ -103,7 +112,34 @@
                             <input type="text" name="customer_phone" value="{{ old('customer_phone', $user->phone) }}" required>
                         </label>
 
-                        <label class="field">
+                        <div class="field">
+                            <span>Способ получения</span>
+                            <div class="delivery-cards">
+                                <label class="delivery-card">
+                                    <input type="radio" name="delivery_type" value="pickup" @checked($selectedDeliveryType === 'pickup')>
+                                    <span class="delivery-card-box">
+                                        <span class="delivery-check" aria-hidden="true"></span>
+                                        <span class="delivery-card-text">
+                                            <b>Самовывоз</b>
+                                            <small>{{ $pickupAddress }}</small>
+                                        </span>
+                                    </span>
+                                </label>
+
+                                <label class="delivery-card">
+                                    <input type="radio" name="delivery_type" value="delivery" @checked($selectedDeliveryType === 'delivery')>
+                                    <span class="delivery-card-box">
+                                        <span class="delivery-check" aria-hidden="true"></span>
+                                        <span class="delivery-card-text">
+                                            <b>Доставка</b>
+                                            <small>{{ number_format((float) $deliveryPrice, 0, ',', ' ') }} &#8381;</small>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <label class="field delivery-address-field @if ($selectedDeliveryType === 'delivery') is-visible @endif">
                             <span>Адрес доставки</span>
                             <input type="text" name="delivery_address" value="{{ old('delivery_address') }}">
                         </label>
