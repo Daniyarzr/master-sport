@@ -18,8 +18,10 @@
     </head>
     <body>
         @php
-            $loginUrl = \Illuminate\Support\Facades\Route::has('login') ? route('login') : '#';
-            $cabinetUrl = \Illuminate\Support\Facades\Route::has('dashboard') ? route('dashboard') : '#';
+            $loginUrl = route('login');
+            $cabinetUrl = auth()->check() && auth()->user()->isAdmin()
+                ? route('admin.dashboard')
+                : route('login');
         @endphp
 
         <div class="top-ribbon">
