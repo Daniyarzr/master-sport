@@ -18,8 +18,10 @@
     </head>
     <body>
         @php
-            $loginUrl = \Illuminate\Support\Facades\Route::has('login') ? route('login') : '#';
-            $cabinetUrl = \Illuminate\Support\Facades\Route::has('dashboard') ? route('dashboard') : '#';
+            $loginUrl = route('login');
+            $cabinetUrl = auth()->check() && auth()->user()->isAdmin()
+                ? route('admin.dashboard')
+                : route('login');
 
             $products = [
                 ['name' => 'Aero Fit Tee Blue', 'collection' => 'run', 'collection_label' => 'Running Core', 'gender' => 'unisex', 'gender_label' => 'Унисекс', 'price' => 3690, 'tone' => 'tone-blue', 'badge' => 'new', 'badge_class' => 'new', 'meta' => 'Дышащая футболка Dry Flow для темповых тренировок.'],
