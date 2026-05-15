@@ -15,6 +15,7 @@ class UserController extends Controller
         User::query()->create([
             'name' => $request->string('name')->toString(),
             'email' => $request->string('email')->toString(),
+            'phone' => $request->string('phone')->toString() ?: null,
             'password' => $request->string('password')->toString(),
             'role' => $request->boolean('is_admin') ? User::ROLE_ADMIN : User::ROLE_USER,
         ]);

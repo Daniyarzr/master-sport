@@ -76,6 +76,37 @@
     grid-column: 1 / -1;
 }
 
+.admin-card .field {
+    display: block;
+    margin-bottom: 0.65rem;
+}
+
+.admin-card .field span {
+    display: block;
+    font-size: 0.84rem;
+    color: #425973;
+    margin-bottom: 0.32rem;
+}
+
+.admin-card .field input,
+.admin-card .field select,
+.admin-card .field textarea {
+    width: 100%;
+    border: 1px solid #cddff2;
+    border-radius: 12px;
+    padding: 0.62rem 0.7rem;
+    font: inherit;
+    color: #1f3044;
+    background: #f9fcff;
+}
+
+.admin-card .check {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.35rem;
+}
+
 .admin-checkbox {
     display: flex;
     align-items: center;
