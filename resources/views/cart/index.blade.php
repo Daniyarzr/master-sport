@@ -27,10 +27,11 @@
                         @foreach ($items as $item)
                             <article class="cart-item">
                                 <div class="cart-item-image">
-                                    <img
-                                        src="{{ $item['image'] ? asset('storage/'.$item['image']) : asset('images/master-sport-banner.png') }}"
-                                        alt="{{ $item['name'] }}"
-                                    >
+                                    @if ($item['image'])
+                                        <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}">
+                                    @else
+                                        <span class="product-media-placeholder product-media-placeholder-sm">Нет фото</span>
+                                    @endif
                                 </div>
 
                                 <div class="cart-item-body">

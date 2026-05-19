@@ -88,15 +88,12 @@
                     <div class="product-grid">
                         @foreach ($products as $product)
                             <article class="panel product-card">
-                                <div class="product-media">
-                                    <img
-                                        src="{{ $product->image ? asset('storage/'.$product->image) : asset('images/master-sport-banner.png') }}"
-                                        alt="{{ $product->name }}"
-                                    >
-                                </div>
+                                @include('partials.product-media', ['product' => $product])
                                 <div class="product-card-body">
                                     <div class="product-card-top">
-                                        <strong>{{ $product->name }}</strong>
+                                        <strong>
+                                            <a href="{{ route('catalog.show', $product) }}">{{ $product->name }}</a>
+                                        </strong>
                                     </div>
                                     <p>{{ $product->description ?: 'Описание скоро добавим.' }}</p>
                                     <div class="meta-row">

@@ -166,10 +166,11 @@
                                         <li>
                                             <div class="order-item-main">
                                                 <div class="order-item-thumb">
-                                                    <img
-                                                        src="{{ $item->product?->image ? asset('storage/'.$item->product->image) : asset('images/master-sport-banner.png') }}"
-                                                        alt="{{ $item->product_name }}"
-                                                    >
+                                                    @if ($item->product?->image)
+                                                        <img src="{{ asset($item->product->image) }}" alt="{{ $item->product_name }}">
+                                                    @else
+                                                        <span class="product-media-placeholder product-media-placeholder-sm">Нет фото</span>
+                                                    @endif
                                                 </div>
                                                 <span>{{ $item->product_name }} × {{ $item->quantity }}</span>
                                             </div>
