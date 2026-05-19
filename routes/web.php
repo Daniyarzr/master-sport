@@ -8,11 +8,13 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::view('/contacts', 'contacts')->name('contacts');
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -32,6 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::post('/cart/checkout', [OrderController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/articles/add', [ArticleController::class, 'create'])->name('articles.create');
+    Route::post('/articles/add', [ArticleController::class, 'store'])->name('articles.add');
+    Route::delete('/dashboard/articles/{article}', [ArticleController::class, 'destroy'])->name('dashboard.articles.destroy');
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
+
+Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');

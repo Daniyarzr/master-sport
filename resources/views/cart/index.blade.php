@@ -141,7 +141,7 @@
 
                         <label class="field delivery-address-field @if ($selectedDeliveryType === 'delivery') is-visible @endif">
                             <span>Адрес доставки</span>
-                            <input type="text" name="delivery_address" value="{{ old('delivery_address') }}">
+                            <input type="text" name="delivery_address" value="{{ old('delivery_address', $user->address) }}" placeholder="Город, улица, дом">
                         </label>
 
                         <label class="field">

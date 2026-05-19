@@ -151,6 +151,7 @@ class CartAndDashboardTest extends TestCase
                 'name' => 'Updated Profile',
                 'email' => 'new-profile@example.com',
                 'phone' => '+79991112233',
+                'address' => 'г. Ижевск, ул. Примерная 10',
                 'password' => '',
                 'password_confirmation' => '',
             ])
@@ -161,6 +162,7 @@ class CartAndDashboardTest extends TestCase
             'name' => 'Updated Profile',
             'email' => 'new-profile@example.com',
             'phone' => '+79991112233',
+            'address' => 'г. Ижевск, ул. Примерная 10',
         ]);
     }
 }

@@ -16,7 +16,7 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="{{ asset('css/storefront.css') }}">
-        <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
+        <link rel="icon" type="image/vnd.microsoft.icon" href="/storage/favicon.ico" />
     </head>
     <body>
         @include('partials.header')
