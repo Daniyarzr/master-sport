@@ -8,22 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable([
-    'user_id',
-    'status',
-    'total',
-    'customer_name',
-    'customer_email',
-    'customer_phone',
-    'delivery_type',
-    'delivery_cost',
-    'delivery_address',
-    'comment',
-])]
+
 class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'status',
+        'total',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
+        'delivery_type',
+        'delivery_cost',
+        'delivery_address',
+        'comment',
+    ];
     protected function casts(): array
     {
         return [

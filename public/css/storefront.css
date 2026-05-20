@@ -88,6 +88,73 @@ a {
     gap: 0.9rem;
 }
 
+.header-menu {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.55rem;
+    border: 1px solid #bfd8fa;
+    border-radius: 999px;
+    background: #fff;
+    color: #2f5989;
+    padding: 0.46rem 0.76rem;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.menu-toggle-icon {
+    width: 15px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.menu-toggle-icon::before,
+.menu-toggle-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 15px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    transition: transform 0.2s ease, top 0.2s ease;
+}
+
+.menu-toggle-icon::before {
+    top: -5px;
+}
+
+.menu-toggle-icon::after {
+    top: 5px;
+}
+
+.site-header.is-menu-open .menu-toggle-icon {
+    background: transparent;
+}
+
+.site-header.is-menu-open .menu-toggle-icon::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+.site-header.is-menu-open .menu-toggle-icon::after {
+    top: 0;
+    transform: rotate(-45deg);
+}
+
 .brand {
     display: inline-flex;
     align-items: center;
@@ -123,6 +190,7 @@ a {
     display: flex;
     align-items: center;
     gap: 0.36rem;
+    margin: 0 auto;
 }
 
 .main-nav a {
@@ -143,6 +211,25 @@ a {
     display: flex;
     align-items: center;
     gap: 0.48rem;
+    margin-left: auto;
+}
+
+@media (min-width: 761px) {
+    .header-inner {
+        position: relative;
+    }
+
+    .main-nav {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+        z-index: 1;
+    }
+
+    .action-group {
+        margin-left: 0;
+    }
 }
 
 .action-group form {
@@ -1849,16 +1936,70 @@ min-height: 200px;
 
 @media (max-width: 760px) {
     .site-topline-inner,
-    .header-inner,
     .footer-inner {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .main-nav,
+    .header-inner {
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+    }
+
+    .header-menu {
+        order: 3;
+        flex: 0 0 100%;
+        width: 100%;
+        margin-left: 0;
+        display: grid;
+        align-items: stretch;
+        justify-content: initial;
+        gap: 0.55rem;
+    }
+
+    .site-header.has-menu-js .header-menu {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-8px);
+        transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
+    }
+
+    .site-header.has-menu-js.is-menu-open .header-menu {
+        max-height: 500px;
+        opacity: 1;
+        transform: translateY(0);
+        padding-bottom: 0.55rem;
+    }
+
+    .main-nav {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.2rem;
+        margin: 0;
+    }
+
+    .main-nav a {
+        border-radius: 10px;
+    }
+
     .action-group {
         width: 100%;
         flex-wrap: wrap;
+        padding-top: 0.35rem;
+        border-top: 1px solid #dce8f6;
+        margin-left: 0;
+    }
+
+    .action-group .btn {
+        flex: 1 1 auto;
+        min-width: 145px;
     }
 
     .product-grid,

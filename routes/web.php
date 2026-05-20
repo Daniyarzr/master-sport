@@ -17,6 +17,8 @@ Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::view('/contacts', 'contacts')->name('contacts');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/create', [ArticleController::class, 'create'])->middleware('auth')->name('articles.create');
+Route::post('/articles/add', [ArticleController::class, 'store'])->middleware('auth')->name('articles.add');
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
 Route::get('/stocks/{stock}', [StockController::class, 'show'])->name('stocks.show');
@@ -39,11 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::post('/cart/checkout', [OrderController::class, 'checkout'])->name('cart.checkout');
-    Route::get('/articles/add', [ArticleController::class, 'create'])->name('articles.create');
-    Route::post('/articles/add', [ArticleController::class, 'store'])->name('articles.add');
     Route::delete('/dashboard/articles/{article}', [ArticleController::class, 'destroy'])->name('dashboard.articles.destroy');
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
-
 

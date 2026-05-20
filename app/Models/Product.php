@@ -8,24 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable([
-    'category_id',
-    'collection_id',
-    'name',
-    'slug',
-    'description',
-    'price',
-    'stock',
-    'image',
-    'brand',
-    'size',
-    'color',
-    'gender',
-])]
+
 class Product extends Model
 {
     use HasFactory;
-
+    protected $fillable = [
+        'category_id',
+        'collection_id',
+        'name',
+        'slug',
+        'description',
+        'price',
+        'stock',
+        'image',
+        'brand',
+        'size',
+        'color',
+        'gender',
+    ];
     /**
      * @return array<string, string>
      */
