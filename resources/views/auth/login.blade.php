@@ -10,7 +10,7 @@
                 <h1>Вход</h1>
                 <p>Войди в кабинет, чтобы смотреть данные профиля и состояние магазина.</p>
 
-                <form method="POST" action="{{ url('/login') }}" class="auth-form">
+                <form method="POST" action="{{ route('login.store') }}" class="auth-form">
                     @csrf
                     <label class="field">
                         <span>Email</span>

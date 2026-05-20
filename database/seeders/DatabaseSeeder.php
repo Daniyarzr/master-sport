@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'phone' => '+79000000000',
-                'role' => 'admin',
+                'role' => User::ROLE_ADMIN,
                 'password' => Hash::make('password'),
             ]
         );
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Test User',
                 'phone' => '+79000000001',
-                'role' => 'user',
+                'role' => User::ROLE_USER,
                 'password' => Hash::make('password'),
             ]
         );
