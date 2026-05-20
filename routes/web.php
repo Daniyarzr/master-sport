@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\ProductCollectionController as AdminProductCollectionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
@@ -42,7 +45,28 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function (): void {
         Route::get('/', AdminDashboardController::class)->name('dashboard');
+        Route::get('/overview', AdminDashboardController::class)->name('index');
+
+        Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+        Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+
+        Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
+        Route::get('/products/{product}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
+        Route::patch('/products/{product}', [AdminProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
         Route::post('/products', [AdminProductController::class, 'store'])->name('products.store');
+
+        Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
+        Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
+        Route::patch('/categories/{category}', [AdminCategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
+
+        Route::get('/collections', [AdminProductCollectionController::class, 'index'])->name('collections.index');
+        Route::post('/collections', [AdminProductCollectionController::class, 'store'])->name('collections.store');
+        Route::patch('/collections/{collection}', [AdminProductCollectionController::class, 'update'])->name('collections.update');
+        Route::delete('/collections/{collection}', [AdminProductCollectionController::class, 'destroy'])->name('collections.destroy');
+
         Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
         Route::patch('/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.role');
     });

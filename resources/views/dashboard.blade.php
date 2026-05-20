@@ -64,7 +64,7 @@
                     <a class="btn btn-light" href="{{ route('catalog') }}">Каталог</a>
                     <a class="btn btn-orange" href="{{ route('cart.index') }}">Корзина</a>
                     @if ($user->isAdmin())
-                        <a class="btn btn-light" href="{{ route('admin.index') }}">Админ</a>
+                        <a class="btn btn-light" href="{{ route('admin.dashboard') }}">Админ</a>
                     @endif
                 </div>
             </article>
