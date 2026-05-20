@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductCollection;
+use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -87,7 +88,7 @@ class DatabaseSeeder extends Seeder
                 'gender' => 'unisex',
                 'category' => 'Футболки',
                 'collection' => 'Run Focus',
-                'image' => 'products/aero-tee-blue.svg',
+                'image' => 'storage/products/aero-tee-blue.svg',
             ],
             [
                 'name' => 'Flow Tee Sand',
@@ -100,7 +101,7 @@ class DatabaseSeeder extends Seeder
                 'gender' => 'unisex',
                 'category' => 'Футболки',
                 'collection' => 'Core Line',
-                'image' => 'products/flow-tee-sand.svg',
+                'image' => 'storage/products/flow-tee-sand.svg',
             ],
             [
                 'name' => 'Sprint Shorts Orange',
@@ -113,7 +114,7 @@ class DatabaseSeeder extends Seeder
                 'gender' => 'unisex',
                 'category' => 'Шорты',
                 'collection' => 'Core Line',
-                'image' => 'products/sprint-shorts-orange.svg',
+                'image' => 'storage/products/sprint-shorts-orange.svg',
             ],
             [
                 'name' => 'Runline Shorts Black',
@@ -126,7 +127,7 @@ class DatabaseSeeder extends Seeder
                 'gender' => 'unisex',
                 'category' => 'Шорты',
                 'collection' => 'Run Focus',
-                'image' => 'products/runline-shorts-black.svg',
+                'image' => 'storage/products/runline-shorts-black.svg',
             ],
             [
                 'name' => 'Flex Hoodie Graphite',
@@ -139,7 +140,7 @@ class DatabaseSeeder extends Seeder
                 'gender' => 'unisex',
                 'category' => 'Худи',
                 'collection' => 'Urban Move',
-                'image' => 'products/flex-hoodie-graphite.svg',
+                'image' => 'storage/products/flex-hoodie-graphite.svg',
             ],
             [
                 'name' => 'Urban Hoodie Clay',
@@ -152,7 +153,7 @@ class DatabaseSeeder extends Seeder
                 'gender' => 'unisex',
                 'category' => 'Худи',
                 'collection' => 'Urban Move',
-                'image' => 'products/urban-hoodie-clay.svg',
+                'image' => 'storage/products/urban-hoodie-clay.svg',
             ],
         ];
 
@@ -172,6 +173,37 @@ class DatabaseSeeder extends Seeder
                     'category_id' => $categories[$product['category']]->id,
                     'collection_id' => $collections[$product['collection']]->id,
                 ]
+            );
+        }
+
+        $stocks = [
+            [
+                'title' => '−20% на коллекцию Run Focus',
+                'description' => "Скидка 20% на все товары линейки Run Focus: беговые футболки и шорты.\n\nАкция действует в магазине и онлайн. Скидка применяется автоматически при оформлении заказа.",
+                'image_path' => 'storage/products/aero-tee-blue.svg',
+                'start_date' => now()->subDays(3),
+                'end_date' => now()->addDays(30),
+            ],
+            [
+                'title' => 'Весенняя распродажа худи',
+                'description' => "Скидки до 15% на худи Urban Move и Flex Hoodie.\n\nУспейте обновить гардероб к сезону — количество товаров ограничено.",
+                'image_path' => 'storage/products/flex-hoodie-graphite.svg',
+                'start_date' => now()->subDays(1),
+                'end_date' => now()->addDays(45),
+            ],
+            [
+                'title' => '2 футболки — третья в подарок',
+                'description' => "При покупке двух футболок из каталога третья модель Core Line — в подарок.\n\nПредложение для зарегистрированных пользователей. Подробности у консультантов.",
+                'image_path' => 'storage/products/flow-tee-sand.svg',
+                'start_date' => now(),
+                'end_date' => now()->addDays(60),
+            ],
+        ];
+
+        foreach ($stocks as $stock) {
+            Stock::query()->updateOrCreate(
+                ['title' => $stock['title']],
+                $stock
             );
         }
     }

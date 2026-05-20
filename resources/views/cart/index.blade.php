@@ -27,10 +27,11 @@
                         @foreach ($items as $item)
                             <article class="cart-item">
                                 <div class="cart-item-image">
-                                    <img
-                                        src="{{ $item['image'] ? asset('storage/'.$item['image']) : asset('images/master-sport-banner.png') }}"
-                                        alt="{{ $item['name'] }}"
-                                    >
+                                    @if ($item['image'])
+                                        <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}">
+                                    @else
+                                        <span class="product-media-placeholder product-media-placeholder-sm">Нет фото</span>
+                                    @endif
                                 </div>
 
                                 <div class="cart-item-body">
@@ -141,7 +142,7 @@
 
                         <label class="field delivery-address-field @if ($selectedDeliveryType === 'delivery') is-visible @endif">
                             <span>Адрес доставки</span>
-                            <input type="text" name="delivery_address" value="{{ old('delivery_address') }}">
+                            <input type="text" name="delivery_address" value="{{ old('delivery_address', $user->address) }}" placeholder="Город, улица, дом">
                         </label>
 
                         <label class="field">

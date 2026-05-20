@@ -39,6 +39,12 @@
                     </label>
 
                     <label class="field">
+                        <span>Адрес доставки</span>
+                        <input type="text" name="address" value="{{ old('address', $user->address) }}" placeholder="Город, улица, дом, квартира">
+                        <small class="field-hint">Подставляется при оформлении заказа с доставкой</small>
+                    </label>
+
+                    <label class="field">
                         <span>Новый пароль</span>
                         <input type="password" name="password" autocomplete="new-password">
                     </label>
@@ -67,6 +73,49 @@
                         <a class="btn btn-light" href="{{ route('admin.dashboard') }}">Админ</a>
                     @endif
                 </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <article class="panel my-articles-panel">
+                <div class="section-head">
+                    <h2>Мои статьи</h2>
+                    <a href="{{ route('articles.create') }}">Написать новую</a>
+                </div>
+
+                @if ($myArticles->isEmpty())
+                    <p class="my-articles-empty">Вы ещё не публиковали статьи.</p>
+                    <a class="btn btn-light" href="{{ route('articles.create') }}">Создать первую статью</a>
+                @else
+                    <div class="my-articles-list">
+                        @foreach ($myArticles as $article)
+                            <article class="my-article-row">
+                                <div class="my-article-main">
+                                    <span class="article-category">{{ $article->category }}</span>
+                                    <h3>
+                                        <a href="{{ route('articles.show', $article) }}">{{ $article->title }}</a>
+                                    </h3>
+                                    <p>{{ Str::limit(strip_tags($article->content), 120) }}</p>
+                                    <span class="my-article-date">{{ $article->created_at?->format('d.m.Y H:i') }}</span>
+                                </div>
+                                <form
+                                    method="POST"
+                                    action="{{ route('dashboard.articles.destroy', $article) }}"
+                                    onsubmit="return confirm('Удалить эту статью?');"
+                                >
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-light btn-danger-outline">
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                        Удалить
+                                    </button>
+                                </form>
+                            </article>
+                        @endforeach
+                    </div>
+                @endif
             </article>
         </div>
     </section>
@@ -117,10 +166,11 @@
                                         <li>
                                             <div class="order-item-main">
                                                 <div class="order-item-thumb">
-                                                    <img
-                                                        src="{{ $item->product?->image ? asset('storage/'.$item->product->image) : asset('images/master-sport-banner.png') }}"
-                                                        alt="{{ $item->product_name }}"
-                                                    >
+                                                    @if ($item->product?->image)
+                                                        <img src="{{ asset($item->product->image) }}" alt="{{ $item->product_name }}">
+                                                    @else
+                                                        <span class="product-media-placeholder product-media-placeholder-sm">Нет фото</span>
+                                                    @endif
                                                 </div>
                                                 <span>{{ $item->product_name }} × {{ $item->quantity }}</span>
                                             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductCollection;
+use App\Models\Stock;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -25,6 +26,11 @@ class HomeController extends Controller
         return view('home', [
             'featuredProducts' => $featuredProducts,
             'collections' => $collections,
+            'promoStocks' => Stock::query()
+                ->where('end_date', '>=', now())
+                ->orderByDesc('start_date')
+                ->limit(3)
+                ->get(),
         ]);
     }
 }

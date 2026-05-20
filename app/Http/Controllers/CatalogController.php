@@ -50,4 +50,11 @@ class CatalogController extends Controller
             ],
         ]);
     }
+
+    public function show(Product $product): View
+    {
+        $product->load(['category', 'collection']);
+
+        return view('products.show', compact('product'));
+    }
 }

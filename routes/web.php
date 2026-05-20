@@ -13,11 +13,20 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StockController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
+Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::view('/contacts', 'contacts')->name('contacts');
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/create', [ArticleController::class, 'create'])->middleware('auth')->name('articles.create');
+Route::post('/articles/add', [ArticleController::class, 'store'])->middleware('auth')->name('articles.add');
+Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
+Route::get('/stocks/{stock}', [StockController::class, 'show'])->name('stocks.show');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');

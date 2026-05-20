@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable([
-    'order_id',
-    'product_id',
-    'product_name',
-    'product_price',
-    'quantity',
-    'line_total',
-])]
 class OrderItem extends Model
 {
     use HasFactory;
-
+    
+        protected $fillable = [
+        'order_id',
+        'product_id',
+        'quantity',
+        'product_price',
+        'line_total',
+        'product_name',
+        'product_size',
+    ];
     protected function casts(): array
     {
         return [

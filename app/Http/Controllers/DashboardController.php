@@ -19,6 +19,7 @@ class DashboardController extends Controller
 
         return view('dashboard', [
             'user' => $user,
+            'myArticles' => $user->articles()->latest()->get(),
             'orders' => $user->orders()->with('items.product')->latest()->get(),
             'activeOrdersCount' => $user->orders()->whereIn('status', ['new', 'processing'])->count(),
             'completedOrdersCount' => $user->orders()->where('status', 'completed')->count(),
@@ -34,6 +35,7 @@ class DashboardController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'phone' => ['required', 'string', 'max:30', Rule::unique('users', 'phone')->ignore($user->id)],
+            'address' => ['nullable', 'string', 'max:500'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
@@ -41,6 +43,7 @@ class DashboardController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
+            'address' => $validated['address'] ?? null,
         ];
 
         if (! empty($validated['password'])) {

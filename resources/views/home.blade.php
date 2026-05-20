@@ -30,6 +30,38 @@
         </div>
     </section>
 
+    @if ($promoStocks->isNotEmpty())
+        <section class="section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Акции</h2>
+                    <a href="{{ route('stocks.index') }}">Все акции</a>
+                </div>
+
+                <div class="stocks-grid stocks-grid-home">
+                    @foreach ($promoStocks as $stock)
+                        <article class="panel stock-card">
+                            @include('partials.stock-media', [
+                                'stock' => $stock,
+                                'badge' => '<span class="stock-badge stock-badge-active">Акция</span>',
+                            ])
+                            <div class="stock-card-body">
+                                <h3>
+                                    <a href="{{ route('stocks.show', $stock) }}">{{ $stock->title }}</a>
+                                </h3>
+                                <p>{{ Str::limit(strip_tags($stock->description), 100) }}</p>
+                                <a class="stock-read-more" href="{{ route('stocks.show', $stock) }}">
+                                    Подробнее
+                                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <section class="section">
         <div class="container">
             <div class="section-head">
@@ -43,7 +75,7 @@
                     <p>Материалы, которые дышат и держат форму после активных тренировок и частой стирки.</p>
                 </article>
                 <article class="panel story-card">
-                    <h3>Нормальная посадка</h3>
+                    <h3>Идеальная посадка</h3>
                     <p>Модели рассчитаны под движение: удобно в зале, на улице и в ежедневном ритме.</p>
                 </article>
                 <article class="panel story-card">
@@ -64,15 +96,12 @@
             <div class="product-grid product-grid-home">
                 @forelse ($featuredProducts as $product)
                     <article class="panel product-card">
-                        <div class="product-media">
-                            <img
-                                src="{{ $product->image ? asset('storage/'.$product->image) : asset('images/master-sport-banner.png') }}"
-                                alt="{{ $product->name }}"
-                            >
-                        </div>
+                        @include('partials.product-media', ['product' => $product])
                         <div class="product-card-body">
                             <div class="product-card-top">
-                                <strong>{{ $product->name }}</strong>
+                                <strong>
+                                    <a href="{{ route('catalog.show', $product) }}">{{ $product->name }}</a>
+                                </strong>
                             </div>
                             <p>{{ $product->description ?: 'Описание скоро добавим.' }}</p>
                             <div class="meta-row">

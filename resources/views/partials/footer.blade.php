@@ -7,6 +7,7 @@
 
         <div class="footer-links">
             <a href="{{ route('catalog') }}">Каталог</a>
+            <a href="{{ route('stocks.index') }}">Акции</a>
             @auth
                 <a href="{{ route('cart.index') }}">Корзина</a>
             @else
