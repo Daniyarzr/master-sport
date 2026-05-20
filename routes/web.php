@@ -26,6 +26,7 @@ Route::get('/articles/create', [ArticleController::class, 'create'])->middleware
 Route::post('/articles/add', [ArticleController::class, 'store'])->middleware('auth')->name('articles.add');
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
+Route::delete('/dashboard/articles/{article}', [ArticleController::class, 'destroy'])->name('dashboard.articles.destroy');
 Route::get('/stocks/{stock}', [StockController::class, 'show'])->name('stocks.show');
 
 Route::middleware('guest')->group(function (): void {

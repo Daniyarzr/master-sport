@@ -405,6 +405,15 @@ section{
     box-shadow: 0 18px 34px rgba(8, 29, 49, 0.22);
 }
 
+.banner-section {
+    padding-top: 1.05rem;
+}
+
+.banner-section .hero-banner {
+    border-color: rgba(176, 207, 241, 0.95);
+    box-shadow: 0 20px 36px rgba(8, 29, 49, 0.24);
+}
+
 .hero-banner-compact {
     min-height: 180px;
 }
@@ -452,6 +461,7 @@ section{
     color: #fff;
     font-size: clamp(1.4rem, 2.5vw, 2rem);
     line-height: 1.16;
+    text-shadow: 0 8px 20px rgba(5, 20, 34, 0.38);
 }
 
 .hero-banner-content p {
@@ -465,6 +475,10 @@ section{
     display: flex;
     flex-wrap: wrap;
     gap: 0.55rem;
+}
+
+.hero-actions .btn {
+    box-shadow: 0 8px 14px rgba(10, 30, 50, 0.2);
 }
 
 .section-head {
@@ -485,6 +499,11 @@ section{
     color: var(--blue-700);
     text-decoration: none;
     font-weight: 700;
+    transition: color 0.2s ease;
+}
+
+.section-head a:hover {
+    color: var(--orange-600);
 }
 
 .section-head span {
@@ -503,6 +522,16 @@ section{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background:
+        linear-gradient(145deg, rgba(47, 139, 255, 0.05), rgba(255, 122, 31, 0.06)),
+        #fff;
+    border: 1px solid #d4e3f2;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.story-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 30px rgba(11, 34, 58, 0.12);
 }
 
 .story-card h3 {
@@ -583,6 +612,24 @@ section{
 
 .product-grid-home {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stocks-grid-home .stock-card,
+.product-grid-home .product-card,
+.collection-grid .collection-card {
+    border-color: #cfe0f3;
+    background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.95));
+}
+
+.stocks-grid-home .stock-card:hover,
+.collection-grid .collection-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 26px rgba(11, 34, 58, 0.12);
+}
+
+.collection-grid .collection-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .product-card {
