@@ -24,6 +24,16 @@
                         @else
                             <a class="btn btn-light" href="{{ route('login') }}">Войти и покупать</a>
                         @endauth
+                        <a class="btn btn-dark call-btn-desktop" href="{{ route('contacts') }}">
+                            <i class="bi bi-telephone" aria-hidden="true"></i>
+                            Позвонить
+                        </a>
+                        @if ($primaryPhoneContact)
+                            <a class="btn btn-dark call-btn-mobile" href="{{ $primaryPhoneContact->resolved_href }}">
+                                <i class="bi bi-telephone" aria-hidden="true"></i>
+                                Позвонить
+                            </a>
+                        @endif
                     </div>
                 </div>
             </article>

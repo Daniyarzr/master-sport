@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Product;
 use App\Models\ProductCollection;
 use App\Models\Stock;
@@ -40,6 +41,61 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('password'),
             ]
         );
+
+        $contacts = [
+            [
+                'key' => 'city_main',
+                'type' => 'city',
+                'label' => 'Город',
+                'value' => 'Ижевск',
+                'href' => null,
+                'sort_order' => 10,
+                'is_active' => true,
+            ],
+            [
+                'key' => 'hours_main',
+                'type' => 'hours',
+                'label' => 'Режим работы',
+                'value' => 'Ежедневно 09:00-21:00',
+                'href' => null,
+                'sort_order' => 20,
+                'is_active' => true,
+            ],
+            [
+                'key' => 'phone_main',
+                'type' => 'phone',
+                'label' => 'Телефон',
+                'value' => '+7 (3412) 90-00-00',
+                'href' => 'tel:+73412900000',
+                'sort_order' => 30,
+                'is_active' => true,
+            ],
+            [
+                'key' => 'email_main',
+                'type' => 'email',
+                'label' => 'Email',
+                'value' => 'hello@mastersport.ru',
+                'href' => 'mailto:hello@mastersport.ru',
+                'sort_order' => 40,
+                'is_active' => true,
+            ],
+            [
+                'key' => 'address_main',
+                'type' => 'address',
+                'label' => 'Адрес',
+                'value' => 'г. Ижевск, ул. Пушкинская, 268',
+                'href' => null,
+                'sort_order' => 50,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($contacts as $contact) {
+            Contact::query()->updateOrCreate(
+                ['key' => $contact['key']],
+                $contact
+            );
+        }
 
         $categories = collect([
             ['name' => 'Футболки', 'slug' => 'tshirts', 'description' => 'Базовые и тренировочные футболки для спорта и города.'],

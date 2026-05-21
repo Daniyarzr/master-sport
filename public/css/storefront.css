@@ -481,6 +481,14 @@ section{
     box-shadow: 0 8px 14px rgba(10, 30, 50, 0.2);
 }
 
+.call-btn-mobile {
+    display: none;
+}
+
+.call-btn-desktop {
+    display: inline-flex;
+}
+
 .section-head {
     margin-bottom: 0.8rem;
     display: flex;
@@ -1985,6 +1993,14 @@ min-height: 200px;
 }
 
 @media (max-width: 760px) {
+    .call-btn-desktop {
+        display: none;
+    }
+
+    .call-btn-mobile {
+        display: inline-flex;
+    }
+
     .site-topline-inner,
     .footer-inner {
         flex-direction: column;
