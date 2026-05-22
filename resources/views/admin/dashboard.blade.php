@@ -190,4 +190,149 @@
             @endforelse
         </div>
     </section>
+<h4 class="mb-4">📊 Панель статистики</h4>
+
+<!-- Карточки с метриками -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-bg-primary h-100">
+            <div class="card-body">
+                <h6 class="card-title">💰 Общая выручка</h6>
+                <h3 class="mb-0">{{ number_format($totalRevenue ?? 0, 0, '.', ' ') }} ₽</h3>
+                <small class="text-white-50">{{ $totalOrders ?? 0 }} заказов</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-success h-100">
+            <div class="card-body">
+                <h6 class="card-title">👥 Пользователи</h6>
+                <h3 class="mb-0">{{ $totalUsers ?? 0 }}</h3>
+                <small class="text-white-50">Зарегистрировано</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-warning h-100">
+            <div class="card-body">
+                <h6 class="card-title">📝 Отзывы</h6>
+                <h3 class="mb-0">{{ $pendingReviews ?? 0 }}</h3>
+                <small class="text-white-50">На модерации</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-info h-100">
+            <div class="card-body">
+                <h6 class="card-title">⭐ Средний рейтинг</h6>
+                <h3 class="mb-0">{{ number_format($avgRating ?? 0, 1) }}/5</h3>
+                <small class="text-white-50">По одобренным отзывам</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Последние заказы и отзывы -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-cart-check me-2"></i>Последние заказы</span>
+                <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-outline-primary">Все заказы</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Клиент</th>
+                            <th>Сумма</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($recentOrders ?? [] as $order)
+                            <tr>
+                                <td>#{{ $order->id }}</td>
+                                <td>{{ $order->user?->name ?? 'Гость' }}</td>
+                                <td>{{ number_format($order->total, 0, '.', ' ') }} ₽</td>
+                                <td>
+                                    @php
+                                        $statusBadges = [
+                                            'pending' => 'warning',
+                                            'processing' => 'info',
+                                            'completed' => 'success',
+                                            'cancelled' => 'danger'
+                                        ];
+                                        $statusLabels = [
+                                            'pending' => 'Ожидает',
+                                            'processing' => 'В обработке',
+                                            'completed' => 'Выполнен',
+                                            'cancelled' => 'Отменён'
+                                        ];
+                                        $badge = $statusBadges[$order->status] ?? 'secondary';
+                                        $label = $statusLabels[$order->status] ?? $order->status;
+                                    @endphp
+                                    <span class="badge bg-{{ $badge }}">{{ $label }}</span>
+                                </td>
+                                <td>{{ $order->created_at->format('d.m.Y') }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="5" class="text-center text-muted py-3">Нет заказов</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-chat-square-text me-2"></i>Отзывы на модерации</span>
+                <a href="{{ route('admin.reviews.index') }}" class="btn btn-sm btn-outline-primary">Все отзывы</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Товар</th>
+                            <th>Автор</th>
+                            <th>⭐</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($recentReviews ?? [] as $review)
+                            <tr>
+                                <td>
+                                    <a href="{{ route('catalog.show', $review->product->slug) }}" target="_blank" class="text-decoration-none">
+                                        {{ Str::limit($review->product->name, 25) }}
+                                    </a>
+                                </td>
+                                <td>{{ $review->getAuthorName() }}</td>
+                                <td>{{ str_repeat('★', $review->rating) }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <form method="POST" action="{{ route('admin.reviews.approve', $review) }}" class="d-inline">
+                                            @csrf @method('PATCH')
+                                            <button class="btn btn-outline-success" title="Одобрить">✓</button>
+                                        </form>
+                                        <form method="POST" action="{{ route('admin.reviews.reject', $review) }}" class="d-inline">
+                                            @csrf @method('PATCH')
+                                            <button class="btn btn-outline-danger" title="Отклонить">✗</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="4" class="text-center text-muted py-3">Нет отзывов на модерации 🎉</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
