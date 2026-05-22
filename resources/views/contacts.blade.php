@@ -5,7 +5,8 @@
 
 @section('content')
     @php
-        $address = $siteContactsByKey->get('address_main')?->value;
+        $address = $siteContactsByKey->get('address_main')?->value
+            ?? $siteContactsByType->get('address')?->first()?->value;
         $mapQuery = rawurlencode($address ?: 'Ижевск, ул. Пушкинская, 268');
     @endphp
 

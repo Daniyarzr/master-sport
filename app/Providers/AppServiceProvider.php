@@ -45,8 +45,10 @@ class AppServiceProvider extends ServiceProvider
                     $siteContactsByType = $siteContacts->groupBy('type');
                     $siteContactsByKey = $siteContacts->keyBy('key');
                     $primaryPhoneContact = $siteContactsByType->get('phone')?->first();
-                    $city = $siteContactsByKey->get('city_main')?->value;
-                    $hours = $siteContactsByKey->get('hours_main')?->value;
+                    $city = $siteContactsByKey->get('city_main')?->value
+                        ?? $siteContactsByType->get('city')?->first()?->value;
+                    $hours = $siteContactsByKey->get('hours_main')?->value
+                        ?? $siteContactsByType->get('hours')?->first()?->value;
 
                     $headerRightParts = array_values(array_filter([$hours, $primaryPhoneContact?->value]));
 

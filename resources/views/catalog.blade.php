@@ -87,7 +87,7 @@
                 @else
                     <div class="product-grid">
                         @foreach ($products as $product)
-                            <article class="panel product-card">
+                            <article class="panel product-card product-card-clickable">
                                 @include('partials.product-media', ['product' => $product])
                                 <div class="product-card-body">
                                     <div class="product-card-top">
@@ -121,6 +121,11 @@
                                         </div>
                                     @endauth
                                 </div>
+                                <a
+                                    class="product-card-stretch-link"
+                                    href="{{ route('catalog.show', $product) }}"
+                                    aria-label="Открыть {{ $product->name }}"
+                                ></a>
                             </article>
                         @endforeach
                     </div>

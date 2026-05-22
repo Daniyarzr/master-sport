@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\ProductCollectionController as AdminProductCollectionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -74,8 +75,15 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/collections', [AdminProductCollectionController::class, 'index'])->name('collections.index');
         Route::post('/collections', [AdminProductCollectionController::class, 'store'])->name('collections.store');
+        Route::get('/collections/{collection}/edit', [AdminProductCollectionController::class, 'edit'])->name('collections.edit');
         Route::patch('/collections/{collection}', [AdminProductCollectionController::class, 'update'])->name('collections.update');
         Route::delete('/collections/{collection}', [AdminProductCollectionController::class, 'destroy'])->name('collections.destroy');
+
+        Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
+        Route::post('/contacts', [AdminContactController::class, 'store'])->name('contacts.store');
+        Route::get('/contacts/{contact}/edit', [AdminContactController::class, 'edit'])->name('contacts.edit');
+        Route::patch('/contacts/{contact}', [AdminContactController::class, 'update'])->name('contacts.update');
+        Route::delete('/contacts/{contact}', [AdminContactController::class, 'destroy'])->name('contacts.destroy');
 
         Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
         Route::patch('/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.role');

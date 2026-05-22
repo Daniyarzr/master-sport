@@ -28,10 +28,6 @@ class Contact extends Model
 
     public function getResolvedHrefAttribute(): ?string
     {
-        if ($this->href !== null && $this->href !== '') {
-            return $this->href;
-        }
-
         if ($this->type === 'phone') {
             $digits = preg_replace('/[^\d+]/', '', $this->value);
 
@@ -42,7 +38,6 @@ class Contact extends Model
             return 'mailto:'.$this->value;
         }
 
-        return null;
+        return $this->href !== '' ? $this->href : null;
     }
 }
-

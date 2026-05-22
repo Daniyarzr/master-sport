@@ -14,6 +14,7 @@
                     <a class="btn btn-light" href="{{ route('admin.products.index') }}">Товары</a>
                     <a class="btn btn-light" href="{{ route('admin.categories.index') }}">Категории</a>
                     <a class="btn btn-light" href="{{ route('admin.collections.index') }}">Коллекции</a>
+                    <a class="btn btn-light" href="{{ route('admin.contacts.index') }}">Контакты</a>
                 </nav>
             </div>
         </section>
