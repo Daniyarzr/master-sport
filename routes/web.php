@@ -14,6 +14,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StockController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\StockController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
+Route::get('/reviews', [ReviewController::class, 'publicIndex'])->name('reviews.index');
 Route::view('/contacts', 'contacts')->name('contacts');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/create', [ArticleController::class, 'create'])->middleware('auth')->name('articles.create');
@@ -49,8 +51,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::post('/cart/checkout', [OrderController::class, 'checkout'])->name('cart.checkout');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-    Route::post('/catalog/{product:slug}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])
-    ->name('reviews.store');
+    Route::post('/catalog/{product:slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
 Route::middleware(['auth', 'admin'])
@@ -87,6 +88,7 @@ Route::middleware(['auth', 'admin'])
         Route::patch('/contacts/{contact}', [AdminContactController::class, 'update'])->name('contacts.update');
         Route::delete('/contacts/{contact}', [AdminContactController::class, 'destroy'])->name('contacts.destroy');
 
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
         Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
         Route::patch('/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.role');
         Route::get('/statistics', [App\Http\Controllers\Admin\StatisticsController::class, 'dashboard'])->name('statistics');

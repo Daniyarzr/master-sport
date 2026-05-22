@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\StoreProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductCollection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -22,6 +23,8 @@ class ProductController extends Controller
                 ->with(['category', 'collection'])
                 ->orderByDesc('created_at')
                 ->paginate(20),
+            'categories' => Category::query()->orderBy('name')->get(['id', 'name']),
+            'collections' => ProductCollection::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -37,6 +40,15 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
+        try {
+            $data['image'] = $this->storeImageForHosting($request->file('image'));
+        } catch (\Throwable $exception) {
+            return back()->withErrors([
+                'image' => $exception->getMessage(),
+            ])->withInput();
+        }
+
         $slug = Str::slug($data['name']);
         $baseSlug = $slug;
         $counter = 1;
@@ -84,5 +96,37 @@ class ProductController extends Controller
         $product->delete();
 
         return back()->with('status', 'Товар удалён.');
+    }
+
+    private function storeImageForHosting(?UploadedFile $image): string
+    {
+        if (! $image) {
+            return 'storage/products/no-image.png';
+        }
+
+        $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
+        $fileName = Str::uuid().'.'.$extension;
+
+        // стандартное сохранение через public 
+        $stored = $image->storeAs('products', $fileName, 'public');
+        if ($stored) {
+            return 'storage/'.str_replace('\\', '/', $stored);
+        }
+
+        // сохранение в папку public_html/storage/products (на случай, если нет симлинка или проблемы с правами на папку storage)
+        $publicProductsDir = public_path('storage/products');
+        if (! is_dir($publicProductsDir)) {
+            @mkdir($publicProductsDir, 0755, true);
+        }
+
+        if (! is_dir($publicProductsDir) || ! is_writable($publicProductsDir)) {
+            throw new \RuntimeException(
+                'Не удалось сохранить изображение. Проверьте права на папки storage и public_html/storage.'
+            );
+        }
+
+        $image->move($publicProductsDir, $fileName);
+
+        return 'storage/products/'.$fileName;
     }
 }

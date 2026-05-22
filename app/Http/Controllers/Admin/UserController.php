@@ -7,9 +7,17 @@ use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserRoleRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    public function index(): View
+    {
+        return view('admin.users.index', [
+            'users' => User::query()->orderBy('name')->get(),
+        ]);
+    }
+
     public function store(StoreUserRequest $request): RedirectResponse
     {
         User::query()->create([
@@ -21,7 +29,7 @@ class UserController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.dashboard')
+            ->route('admin.users.index')
             ->with('status', 'Пользователь создан.');
     }
 
@@ -36,7 +44,7 @@ class UserController extends Controller
         $user->update(['role' => $request->input('role')]);
 
         return redirect()
-            ->route('admin.dashboard')
+            ->route('admin.users.index')
             ->with('status', 'Роль пользователя обновлена.');
     }
 }

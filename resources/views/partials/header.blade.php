@@ -35,6 +35,7 @@
             <nav class="main-nav" aria-label="Главное меню">
                 <a class="{{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">Главная</a>
                 <a class="{{ request()->routeIs('catalog*') ? 'is-active' : '' }}" href="{{ route('catalog') }}">Каталог</a>
+                <a class="{{ request()->routeIs('reviews.*') ? 'is-active' : '' }}" href="{{ route('reviews.index') }}">Отзывы</a>
                 <a class="{{ request()->routeIs('stocks.*') ? 'is-active' : '' }}" href="{{ route('stocks.index') }}">Акции</a>
                 <a class="{{ request()->routeIs('contacts') ? 'is-active' : '' }}" href="{{ route('contacts') }}">Контакты</a>
                 <a class="{{ request()->routeIs('articles.*') ? 'is-active' : '' }}" href="{{ route('articles.index') }}">Статьи</a>

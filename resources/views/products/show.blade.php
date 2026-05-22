@@ -63,65 +63,100 @@
         </div>
     </section>
     @php
-        $averageRating = $product->average_rating; // используем аксессор из модели
+        $averageRating = $product->average_rating;
+        $averageRatingDisplay = abs($averageRating - round($averageRating)) < 0.001
+            ? number_format($averageRating, 0, ',', ' ')
+            : number_format($averageRating, 1, ',', ' ');
         $reviews = $product->approvedReviews()
             ->with('user:id,name')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+        $hasOwnReview = auth()->check()
+            ? \App\Models\Review::query()
+                ->where('product_id', $product->id)
+                ->where('user_id', auth()->id())
+                ->where('status', '!=', \App\Models\Review::STATUS_REJECTED)
+                ->exists()
+            : false;
     @endphp
 
-<div class="reviews-section mt-8">
-    <h3 class="text-2xl font-bold mb-4">Отзывы ({{ $reviews->total() }})</h3>
-    
-    @if($averageRating > 0)
-        <div class="mb-4 flex items-center gap-2">
-            <span class="text-yellow-500">★</span>
-            <span class="font-semibold">{{ number_format($averageRating, 1) }}/5</span>
-        </div>
-    @endif
+    <section class="section">
+        <div class="container">
+            <div class="reviews-section">
+                <div class="reviews-header">
+                    <div>
+                        <h2>Отзывы о товаре</h2>
+                        <p>Реальные впечатления покупателей после покупки. <a href="{{ route('reviews.index') }}">Все отзывы</a></p>
+                    </div>
+                    <div class="review-rating-summary">
+                        <b>{{ $averageRatingDisplay }}/5</b>
+                        <span>{{ $reviews->total() }} отзывов</span>
+                    </div>
+                </div>
 
-    {{-- Форма отзыва --}}
-    @auth
-        @if(!\App\Models\Review::where('product_id', $product->id)->where('user_id', Auth::id())->where('status', '!=', 'rejected')->exists())
-            <form method="POST" action="{{ route('reviews.store', $product) }}" class="mb-6 p-4 border rounded">
-                @csrf
-                <div class="mb-3">
-                    <label class="block text-sm font-medium">Оценка</label>
-                    <select name="rating" class="border rounded p-2" required>
-                        @foreach(range(5,1) as $r)
-                            <option value="{{ $r }}">{{ $r }} ★</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="block text-sm font-medium">Ваш отзыв</label>
-                    <textarea name="content" class="border rounded p-2 w-full" rows="4" required minlength="10" maxlength="2000"></textarea>
-                </div>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Отправить</button>
-            </form>
-        @else
-            <p class="text-gray-500 mb-4">Вы уже оставляли отзыв на этот товар.</p>
-        @endif
-    @else
-        <p class="mb-4"><a href="{{ route('login') }}" class="text-blue-600">Войдите</a>, чтобы оставить отзыв.</p>
-    @endauth
+                @auth
+                    @if (! $hasOwnReview)
+                        <form method="POST" action="{{ route('reviews.store', $product) }}" class="panel review-form">
+                            @csrf
+                            <div class="review-form-grid">
+                                <label class="field">
+                                    <span>Оценка</span>
+                                    <select name="rating" required>
+                                        @foreach (range(5, 1) as $r)
+                                            <option value="{{ $r }}">{{ $r }} ★</option>
+                                        @endforeach
+                                    </select>
+                                </label>
 
-    {{-- Список отзывов --}}
-    @forelse($reviews as $review)
-        <div class="border-b py-4">
-            <div class="flex justify-between items-start">
-                <div>
-                    <strong>{{ $review->getAuthorName() }}</strong>
-                    <span class="text-yellow-500 ml-2">{{ str_repeat('★', $review->rating) }}</span>
+                                <label class="field">
+                                    <span>Ваш отзыв</span>
+                                    <textarea name="content" rows="4" required minlength="10" maxlength="2000"></textarea>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-orange">Отправить отзыв</button>
+                        </form>
+                    @else
+                        <div class="panel review-note">
+                            Вы уже оставляли отзыв на этот товар.
+                        </div>
+                    @endif
+                @else
+                    <div class="panel review-note">
+                        <a href="{{ route('login') }}">Войдите</a>, чтобы оставить отзыв.
+                    </div>
+                @endauth
+
+                <div class="reviews-list-grid">
+                    @forelse ($reviews as $review)
+                        <article class="panel review-card">
+                            <div class="review-card-head">
+                                <div class="review-stars" aria-label="Оценка {{ $review->rating }} из 5">
+                                    @for ($star = 1; $star <= 5; $star++)
+                                        <span class="{{ $star <= $review->rating ? 'is-filled' : '' }}">★</span>
+                                    @endfor
+                                </div>
+                                <time datetime="{{ $review->created_at?->toDateString() }}">{{ $review->created_at?->format('d.m.Y') }}</time>
+                            </div>
+
+                            <p class="review-card-text">{{ $review->content }}</p>
+
+                            <div class="review-card-meta">
+                                <strong>{{ $review->getAuthorName() }}</strong>
+                            </div>
+                        </article>
+                    @empty
+                        <article class="panel empty-state">
+                            Пока нет отзывов. Будьте первым.
+                        </article>
+                    @endforelse
                 </div>
-                <small class="text-gray-500">{{ $review->created_at->format('d.m.Y') }}</small>
+
+                @if ($reviews->hasPages())
+                    <div class="pager">
+                        {{ $reviews->links() }}
+                    </div>
+                @endif
             </div>
-            <p class="mt-2">{{ $review->content }}</p>
         </div>
-    @empty
-        <p class="text-gray-500">Пока нет отзывов. Будьте первым!</p>
-    @endforelse
-
-    {{ $reviews->links() }}
-</div>
+    </section>
 @endsection

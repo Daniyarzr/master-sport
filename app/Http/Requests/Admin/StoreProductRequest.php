@@ -21,7 +21,7 @@ class StoreProductRequest extends FormRequest
             'description' => ['required', 'string', 'max:2000'],
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
-            'image' => ['required', 'string', 'max:500'],
+            'image' => ['required', 'image', 'max:5120'],
             'category_id' => ['required', 'exists:categories,id'],
             'collection_id' => ['nullable', 'exists:product_collections,id'],
             'brand' => ['required', 'string', 'max:120'],

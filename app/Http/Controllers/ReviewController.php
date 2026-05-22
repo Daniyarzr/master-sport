@@ -6,10 +6,43 @@ use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
+    public function publicIndex(Request $request): View
+    {
+        $selectedRating = (int) $request->integer('rating');
+        if ($selectedRating < 1 || $selectedRating > 5) {
+            $selectedRating = 0;
+        }
+
+        $baseQuery = Review::query()->where('status', Review::STATUS_APPROVED);
+
+        $reviewsQuery = (clone $baseQuery)
+            ->with([
+                'product:id,name,slug',
+                'user:id,name',
+            ])
+            ->latest();
+
+        if ($selectedRating > 0) {
+            $reviewsQuery->where('rating', $selectedRating);
+        }
+
+        $reviews = $reviewsQuery->paginate(12)->withQueryString();
+
+        return view('reviews.index', [
+            'reviews' => $reviews,
+            'selectedRating' => $selectedRating,
+            'reviewsStats' => [
+                'total' => (clone $baseQuery)->count(),
+                'average' => (float) ((clone $baseQuery)->avg('rating') ?? 0),
+                'fiveStars' => (clone $baseQuery)->where('rating', 5)->count(),
+            ],
+        ]);
+    }
+
     public function store(Request $request, Product $product)
     {
         $validated = $request->validate([
