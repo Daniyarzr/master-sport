@@ -43,6 +43,13 @@ class ProductCollectionController extends Controller
         return back()->with('status', 'Коллекция создана.');
     }
 
+    public function edit(ProductCollection $collection): View
+    {
+        return view('admin.collections.edit', [
+            'collection' => $collection,
+        ]);
+    }
+
     public function update(Request $request, ProductCollection $collection): RedirectResponse
     {
         $validated = $request->validate([
@@ -69,4 +76,3 @@ class ProductCollectionController extends Controller
         return back()->with('status', 'Коллекция удалена.');
     }
 }
-

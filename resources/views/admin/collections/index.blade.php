@@ -5,7 +5,7 @@
 
 @section('admin')
     <section class="section">
-        <div class="container admin-grid">
+        <div class="container">
             <article class="panel admin-card">
                 <h1 style="margin-bottom: 0.85rem;">Коллекции</h1>
 
@@ -31,7 +31,11 @@
                     <button class="btn btn-orange" type="submit">Создать</button>
                 </form>
             </article>
+        </div>
+    </section>
 
+    <section class="section">
+        <div class="container">
             <article class="panel admin-card">
                 <h2>Список</h2>
                 <div class="admin-table-wrap">
@@ -48,26 +52,17 @@
                         <tbody>
                             @forelse ($collections as $collection)
                                 <tr>
-                                    <td colspan="5">
-                                        <div style="display: grid; grid-template-columns: 1.2fr 1fr 110px 2fr auto auto; gap: 0.5rem; align-items: center;">
-                                            <form method="POST" action="{{ route('admin.collections.update', $collection) }}" style="display: contents;">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input class="search-input" name="name" value="{{ $collection->name }}" required>
-                                                <input class="search-input" name="slug" value="{{ $collection->slug }}" required>
-                                                <label class="check" style="margin: 0;">
-                                                    <input type="checkbox" name="is_active" value="1" @checked($collection->is_active)>
-                                                    <span>Да</span>
-                                                </label>
-                                                <input class="search-input" name="description" value="{{ $collection->description }}" placeholder="Описание (необязательно)">
-                                                <button class="btn btn-light" type="submit">Сохранить</button>
-                                            </form>
-                                            <form method="POST" action="{{ route('admin.collections.destroy', $collection) }}" onsubmit="return confirm('Удалить коллекцию?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-dark" type="submit">Удалить</button>
-                                            </form>
-                                        </div>
+                                    <td>{{ $collection->name }}</td>
+                                    <td>{{ $collection->slug }}</td>
+                                    <td>{{ $collection->is_active ? 'Да' : 'Нет' }}</td>
+                                    <td>{{ $collection->description ?: '—' }}</td>
+                                    <td>
+                                        <a class="btn btn-light" href="{{ route('admin.collections.edit', $collection) }}">Редактировать</a>
+                                        <form method="POST" action="{{ route('admin.collections.destroy', $collection) }}" style="display: inline;" onsubmit="return confirm('Удалить коллекцию?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-dark" type="submit">Удалить</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
@@ -82,4 +77,3 @@
         </div>
     </section>
 @endsection
-

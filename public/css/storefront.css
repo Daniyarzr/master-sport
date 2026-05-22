@@ -481,6 +481,14 @@ section{
     box-shadow: 0 8px 14px rgba(10, 30, 50, 0.2);
 }
 
+.call-btn-mobile {
+    display: none;
+}
+
+.call-btn-desktop {
+    display: inline-flex;
+}
+
 .section-head {
     margin-bottom: 0.8rem;
     display: flex;
@@ -640,6 +648,17 @@ section{
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.product-card-clickable {
+    position: relative;
+}
+
+.product-card-stretch-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+}
+
 .product-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 24px rgba(11, 34, 58, 0.1);
@@ -762,6 +781,8 @@ section{
     justify-content: space-between;
     gap: 0.45rem;
     flex-wrap: nowrap;
+    position: relative;
+    z-index: 2;
 }
 
 .product-price-inline {
@@ -1985,6 +2006,14 @@ min-height: 200px;
 }
 
 @media (max-width: 760px) {
+    .call-btn-desktop {
+        display: none;
+    }
+
+    .call-btn-mobile {
+        display: inline-flex;
+    }
+
     .site-topline-inner,
     .footer-inner {
         flex-direction: column;

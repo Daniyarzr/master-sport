@@ -8,7 +8,7 @@
         <div class="container">
             <article class="hero-banner hero-banner-compact">
                 <img
-                    src="{{ asset('images/master-sport-banner.png') }}"
+                    src="{{ asset('images/master-sport-banner.webp') }}"
                     alt="Баннер Master Sport"
                     class="hero-banner-image"
                 >
@@ -24,6 +24,16 @@
                         @else
                             <a class="btn btn-light" href="{{ route('login') }}">Войти и покупать</a>
                         @endauth
+                        <a class="btn btn-dark call-btn-desktop" href="{{ route('contacts') }}">
+                            <i class="bi bi-telephone" aria-hidden="true"></i>
+                            Позвонить
+                        </a>
+                        @if ($primaryPhoneContact)
+                            <a class="btn btn-dark call-btn-mobile" href="{{ $primaryPhoneContact->resolved_href }}">
+                                <i class="bi bi-telephone" aria-hidden="true"></i>
+                                Позвонить: {{ $primaryPhoneContact->value }}
+                            </a>
+                        @endif
                     </div>
                 </div>
             </article>

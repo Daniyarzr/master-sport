@@ -6,8 +6,10 @@
 
 <div class="site-topline">
     <div class="container site-topline-inner">
-        <span>Master Sport · Ижевск</span>
-        <span>Ежедневно 09:00-21:00 · +7 (3412) 90-00-00</span>
+        <span>{{ $headerToplineLeft }}</span>
+        @if ($headerToplineRight)
+            <span>{{ $headerToplineRight }}</span>
+        @endif
     </div>
 </div>
 
