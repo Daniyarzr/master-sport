@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::post('/cart/checkout', [OrderController::class, 'checkout'])->name('cart.checkout');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::post('/catalog/{product:slug}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])
+    ->name('reviews.store');
 });
 
 Route::middleware(['auth', 'admin'])
@@ -87,4 +89,15 @@ Route::middleware(['auth', 'admin'])
 
         Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
         Route::patch('/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.role');
+        Route::get('/statistics', [App\Http\Controllers\Admin\StatisticsController::class, 'dashboard'])->name('statistics');
+        Route::get('/statistics/sales', [App\Http\Controllers\Admin\StatisticsController::class, 'sales'])->name('statistics.sales');
+        Route::get('/statistics/activity', [App\Http\Controllers\Admin\StatisticsController::class, 'activity'])->name('statistics.activity');
+        
+        // Модерация отзывов
+        Route::get('/reviews', [App\Http\Controllers\Admin\ReviewModerationController::class, 'index'])->name('reviews.index');
+        Route::patch('/reviews/{review}/approve', [App\Http\Controllers\Admin\ReviewModerationController::class, 'approve'])->name('reviews.approve');
+        Route::patch('/reviews/{review}/reject', [App\Http\Controllers\Admin\ReviewModerationController::class, 'reject'])->name('reviews.reject');
+        Route::patch('/reviews/{review}/spam', [App\Http\Controllers\Admin\ReviewModerationController::class, 'markSpam'])->name('reviews.spam');
+        Route::post('/reviews/bulk', [App\Http\Controllers\Admin\ReviewModerationController::class, 'bulkAction'])->name('reviews.bulk');
+    
     });

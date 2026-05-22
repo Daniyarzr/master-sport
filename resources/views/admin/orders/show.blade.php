@@ -85,5 +85,6 @@
             </article>
         </div>
     </section>
+    
 @endsection
 

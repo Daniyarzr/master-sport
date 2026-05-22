@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -55,5 +55,29 @@ class Product extends Model
     public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
+    }
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'product_id');
+    }
+
+    /**
+     * Вспомогательный метод: только одобренные отзывы (для частого использования)
+     */
+    public function approvedReviews(): HasMany
+    {
+        return $this->reviews()->where('status', Review::STATUS_APPROVED);
+    }
+
+    /**
+     * Средний рейтинг товара (кэшируемый)
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        return \Illuminate\Support\Facades\Cache::remember(
+            "product_{$this->id}_rating",
+            3600,
+            fn() => $this->approvedReviews()->avg('rating') ?? 0
+        );
     }
 }
